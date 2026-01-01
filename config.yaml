@@ -1,0 +1,25 @@
+# X DM自動送信RPA 設定ファイル
+
+# 検索設定
+search:
+  keyword: ""                    # 検索キーワード（必須）
+  maxResults: 50                 # 最大取得ユーザー数
+
+# DMメッセージ設定
+message:
+  template: |
+    はじめまして！
+    DMさせていただきました。
+    よろしければお話しできると嬉しいです！
+
+# レート制限設定
+rateLimit:
+  delayBetweenDMs: 60000         # DM間の待機時間（ミリ秒）= 60秒
+  maxDMsPerDay: 50               # 1日あたりの最大送信数
+
+# ブラウザ設定
+browser:
+  headless: false                # true: バックグラウンド実行
+  viewport:
+    width: 1280
+    height: 720
