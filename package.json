@@ -1,39 +1,74 @@
 {
-  "name": "rpa-automation-dm",
-  "version": "0.1.0",
-  "description": "X (Twitter) DM自動送信RPA - キーワード検索してDMを自動送信",
-  "type": "module",
+  "name": "image-rpa-studio",
+  "version": "1.0.0",
+  "description": "画像認識ベースのRPAツール - ロボパット型デスクトップ自動化",
+  "main": "dist/electron/main.js",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "start": "tsx src/index.ts",
+    "dev:electron": "npm run build:electron && electron .",
+    "build:electron": "tsc -p tsconfig.electron.json && npm run copy:renderer",
+    "copy:renderer": "xcopy /Y /I src\\renderer\\*.html dist\\renderer\\ && xcopy /Y /I src\\renderer\\*.css dist\\renderer\\ && xcopy /Y /I src\\renderer\\*.js dist\\renderer\\",
     "build": "tsc",
+    "start": "electron .",
+    "package": "electron-builder --win",
     "test": "vitest",
-    "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "rpa",
     "automation",
-    "twitter",
-    "x",
-    "dm"
+    "image-recognition",
+    "desktop",
+    "windows"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "playwright": "^1.40.0",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",
-    "yaml": "^2.3.4",
-    "winston": "^3.11.0"
+    "jimp": "^0.22.12",
+    "screenshot-desktop": "^1.15.0",
+    "winston": "^3.11.0",
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
     "eslint": "^8.54.0",
     "tsx": "^4.7.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
+  },
+  "build": {
+    "appId": "com.imagerpa.studio",
+    "productName": "Image RPA Studio",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "scenarios",
+        "to": "scenarios"
+      },
+      {
+        "from": "templates",
+        "to": "templates"
+      }
+    ]
   }
 }

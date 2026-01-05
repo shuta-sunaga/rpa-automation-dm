@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file:">
+  <title>Image RPA Studio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- ヘッダー -->
+    <header class="header">
+      <div class="header-left">
+        <h1>Image RPA Studio</h1>
+      </div>
+      <div class="header-right">
+        <span id="status-indicator" class="status idle">待機中</span>
+      </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+      <!-- サイドバー: シナリオ一覧 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>シナリオ</h2>
+          <button id="btn-new-scenario" class="btn btn-primary btn-sm">+ 新規</button>
+        </div>
+        <div id="scenario-list" class="scenario-list">
+          <!-- シナリオ一覧がここに表示される -->
+        </div>
+      </aside>
+
+      <!-- 中央: シナリオエディタ -->
+      <section class="editor-panel">
+        <div class="editor-header">
+          <input type="text" id="scenario-name" class="scenario-name-input" placeholder="シナリオ名" value="新規シナリオ">
+          <div class="editor-actions">
+            <button id="btn-save" class="btn btn-secondary">保存</button>
+            <button id="btn-capture" class="btn btn-secondary">画面キャプチャ</button>
+          </div>
+        </div>
+
+        <!-- 変数設定 -->
+        <div class="variables-section">
+          <h3>変数</h3>
+          <div id="variables-list" class="variables-list">
+            <!-- 変数リスト -->
+          </div>
+          <button id="btn-add-variable" class="btn btn-sm">+ 変数追加</button>
+        </div>
+
+        <!-- ステップエディタ -->
+        <div class="steps-section">
+          <h3>ステップ</h3>
+          <div id="steps-list" class="steps-list">
+            <!-- ステップリスト -->
+          </div>
+          <div class="add-step-buttons">
+            <button class="btn btn-sm" data-action="image_click">画像クリック</button>
+            <button class="btn btn-sm" data-action="type_text">テキスト入力</button>
+            <button class="btn btn-sm" data-action="key_press">キー押下</button>
+            <button class="btn btn-sm" data-action="wait">待機</button>
+            <button class="btn btn-sm" data-action="scroll">スクロール</button>
+            <button class="btn btn-sm" data-action="loop">ループ</button>
+            <button class="btn btn-sm" data-action="condition">条件分岐</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右パネル: 実行コントロール & ログ -->
+      <aside class="control-panel">
+        <div class="execution-controls">
+          <h3>実行</h3>
+          <div class="control-buttons">
+            <button id="btn-execute" class="btn btn-success btn-lg">
+              <span class="icon">▶</span> 実行
+            </button>
+            <button id="btn-pause" class="btn btn-warning" disabled>
+              <span class="icon">⏸</span> 一時停止
+            </button>
+            <button id="btn-stop" class="btn btn-danger" disabled>
+              <span class="icon">⏹</span> 停止
+            </button>
+          </div>
+
+          <div class="execution-progress">
+            <div class="progress-bar">
+              <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+            </div>
+            <span id="progress-text">0 / 0</span>
+          </div>
+
+          <div id="current-step" class="current-step">
+            <!-- 現在実行中のステップ -->
+          </div>
+        </div>
+
+        <div class="log-section">
+          <h3>ログ</h3>
+          <div id="log-container" class="log-container">
+            <!-- ログ出力 -->
+          </div>
+          <button id="btn-clear-log" class="btn btn-sm">ログクリア</button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- ステップ編集モーダル -->
+    <div id="step-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">ステップ編集</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div id="modal-body" class="modal-body">
+          <!-- 動的に生成 -->
+        </div>
+        <div class="modal-footer">
+          <button id="btn-modal-cancel" class="btn btn-secondary">キャンセル</button>
+          <button id="btn-modal-save" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 画面キャプチャモーダル -->
+    <div id="capture-modal" class="modal hidden">
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <h3>画面キャプチャ - テンプレート作成</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="capture-container">
+            <img id="capture-image" src="" alt="Screen capture" draggable="false">
+            <div id="selection-box" class="selection-box hidden"></div>
+          </div>
+          <div class="capture-controls">
+            <button id="btn-refresh-capture" class="btn btn-secondary">再キャプチャ</button>
+            <input type="text" id="template-name" placeholder="テンプレート名" class="template-name-input">
+            <button id="btn-save-template" class="btn btn-primary">テンプレート保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
